@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nebula Reality</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html,body{
+      height:100%;
+      font-family:'Inter',system-ui,sans-serif;
+      background:black;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    /* Shooting stars canvas */
+    #shootingStars{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    section{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:5rem 2rem;
+      z-index:1;
+    }
+
+    h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(2.5rem,6vw,5rem);
+      letter-spacing:0.15em;
+      animation:fadeIn 2.5s ease forwards;
+    }
+
+    p{
+      max-width:700px;
+      margin:1.5rem auto 0;
+      font-size:1.1rem;
+      opacity:0.85;
+    }
+
+    /* Backgrounds */
+    .hero{
+      background:url('https://i.pinimg.com/736x/b2/4c/f0/b24cf0186b7b91043a31b616a70a1045.jpg') center/cover no-repeat;
+    }
+
+    .next{
+      background:url('https://i.pinimg.com/736x/e8/cc/78/e8cc782d96a018058e958e5f678e63bd.jpg') center/cover no-repeat;
+    }
+
+    .extra{
+      background:url('https://i.pinimg.com/1200x/4b/6b/48/4b6b4897fbc009694455bb6c8f88e847.jpg') center/cover no-repeat;
+    }
+
+    .liveDonation{
+      background:url('https://image2url.com/images/1766357388855-90a46165-d7ae-4dd7-bf0f-a1efb01b53a3.jpg') center/cover no-repeat;
+    }
+
+    /* Black cinematic blocker */
+    .blocker{
+      position:absolute;
+      bottom:-55vh;
+      left:0;
+      width:100%;
+      height:55vh;
+      background:black;
+      z-index:2;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(40px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="shootingStars"></canvas>
+
+  <section class="hero">
+    <div>
+      <h1>NEBULA REALITY</h1>
+      <p>Cybersecurity · Gaming · Virtual Simulators · Online Events</p>
+    </div>
+    <div class="blocker"></div>
+  </section>
+
+  <section class="next">
+    <div>
+      <h1>ENTER THE FUTURE</h1>
+      <p>We build immersive cyber experiences, competitive simulations and next‑gen digital events.</p>
+    </div>
+  </section>
+
+  <section class="extra">
+    <div>
+      <h1>IMMERSE YOURSELF</h1>
+      <p>Experience dynamic virtual worlds, interactive games, and futuristic simulations like never before.</p>
+    </div>
+  </section>
+
+  <section class="liveDonation">
+    <div>
+      <h1>LIVE DONATION EVENTS</h1>
+      <p>Join us in real-time fundraising, interactive streams, and special digital events that give back.</p>
+    </div>
+  </section>
+
+  <script>
+    // ===== Shooting Stars Animation =====
+    const canvas = document.getElementById('shootingStars');
+    const ctx = canvas.getContext('2d');
+
+    let w, h;
+    function resize(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const stars = [];
+
+    function spawnStar(){
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h * 0.5,
+        vx: 6 + Math.random() * 4,
+        vy: 2 + Math.random() * 2,
+        life: 0
+      });
+    }
+
+    function animate(){
+      ctx.clearRect(0,0,w,h);
+      for(let i = stars.length - 1; i >= 0; i--){
+        const s = stars[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life++;
+
+        ctx.strokeStyle = 'rgba(180,200,255,0.8)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 4, s.y - s.vy * 4);
+        ctx.stroke();
+
+        if(s.x > w || s.y > h || s.life > 60){
+          stars.splice(i,1);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    setInterval(spawnStar, 900);
+    animate();
+  </script>
+
+</body>
+</html>
